@@ -3,12 +3,19 @@ Purpose
 
 Use cmake to compile latex files.
 
+Test Environment
+----------------
+
+* Gentoo Linux (with noto-cjk installed for CJK fonts)
+* TeXLive 2017
+* cmake 2.8+
+
 How to use
 ----------
 
-Put CMakeLists.txt together with your
-latex files, modify CMakeLists.txt to match your project, and run the
-following commands:
+Put [CMakeLists.txt](CMakeLists.txt) and [UseLATEX.cmake](UseLATEX.cmake)
+together with your latex files, modify CMakeLists.txt to match your project,
+and run the following commands:
 
 ```
 #!/bin/sh
