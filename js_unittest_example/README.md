@@ -52,3 +52,5 @@ TOTAL: 2 SUCCESS
 ```
 
 That's it. Happy testing! :smile:
+
+[Site index](../)
