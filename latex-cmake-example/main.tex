@@ -1,0 +1,66 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{xeCJK}
+\usepackage{graphicx}
+\usepackage{listings}
+\setCJKmainfont[Path = /usr/share/fonts/noto/, Extension = .otf]{NotoSansCJKtc-Regular}
+\setCJKmonofont[Path = /usr/share/fonts/noto/, Extension = .otf]{NotoSansMonoCJKtc-Regular}
+
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+
+\usetheme{Singapore}
+
+\begin{document}
+\author{曾志宏}
+\title{\LaTeX 和 cmake}
+\date{\today}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}
+什麼是 \LaTeX ?
+\begin{itemize}
+\item Well...你知道的
+\end{itemize}
+
+\bigskip
+
+什麼是cmake\cite{cmake}?
+\begin{itemize}
+\item 跨平台的 meta-build 的軟體, 可自動生成 Makefile
+\item 編譯 \LaTeX 文件只需下一個 make 指令
+\item 支援 out-of-source build, 生成的檔案放在獨立的目錄裡, 不影響原始目錄
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+cmake 用到的檔案:
+\begin{itemize}
+\item CMakeLists.txt --- cmake 的規則檔, 視文件的需求修改
+\item UseLATEX.cmake\cite{UseLATEX} --- 直接使用
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{CMakeLists.txt的內容}
+\lstinputlisting{CMakeLists.txt}
+
+INPUTS 變數裡儲存編譯時會使用到的檔案, 如圖檔, 程式碼等等
+\end{frame}
+
+\begin{frame}[fragile]{編譯指令}
+以本文件為例:
+
+\lstinputlisting[language=bash]{go.sh}
+
+生成的文件在 out 目錄裡
+\end{frame}
+
+\begin{frame}
+\Huge That's it.
+\end{frame}
+
+\bibliography{ref}
+\bibliographystyle{plain}
+\end{document}
