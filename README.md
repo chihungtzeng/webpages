@@ -2,7 +2,7 @@ This page is my notes about what I learned. They are mostly technical stuffs tha
 
 ### C/C++
 
-[struct pack](struct_pack/index.html)
+[struct pack](struct_pack/index.html), which is presented by using reveal.js.
 
 ### LaTeX
 
