@@ -26,3 +26,7 @@ This page is my notes about what I learned. They are mostly technical stuffs tha
 [Performance Measurement in Python](py_perf/index.html)
 
 [Unicode in Python](py_unicode/index.html)
+
+### Utilities
+
+[Checksum of the text section of a program](elf_checksum/)
