@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <!-- Slide meta data, remove/edit as you see fit -->
+        <title>Mongo Shell</title>
+        <meta name="generator" content="Organic" />
+        <meta name="author" content="" />
+        <meta name="company" content="" />
+        <meta name="email" content="" />
+        <meta name="date" content="2016-04-10" />
+        <meta name="venue" content="The Internets" />
+        <!-- Slippy core file and dependencies -->
+        <script type="text/javascript" src="../slippy/src/jquery.min.js"></script>
+        <script type="text/javascript" src="../slippy/src/jquery.history.js"></script>
+        <script type="text/javascript" src="../slippy/src/slippy.js"></script>
+        <!-- Slippy structural styles -->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/slippy.css"/>
+        <!-- Slippy theme -->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/slippy-pure.css"/>
+        <!-- Syntax highlighting core file  -->
+        <script type="text/javascript" src="../slippy/src/highlighter/shCore.js"></script>
+        <!-- Syntax highlighting brushes, remove those you don't need -->
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushBash.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCss.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushJava.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPython.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushScala.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushSql.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushVb.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushXml.js"></script>
+        <!-- Syntax highlighting styles-->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/highlighter/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../slippy/src/highlighter/shThemeEclipse.css"/>
+        <!-- Slippy init code -->
+        <script type="text/javascript">
+            $(function() {
+                $(".slide").slippy({
+                    // settings go here
+                    // possible values are:
+                    //  - animLen, duration for default animations (0 = disabled)
+                    //  - animInForward, receives a slide and animates it
+                    //  - animInRewind, receives a slide and animates it
+                    //  - animOutForward, receives a slide and animates it
+                    //  - animOutRewind, receives a slide and animates it
+                    //  - baseWidth, defines the base for img resizing, if you don't want only
+                    //    full-width images, specify this as the pixel width of a slide so that
+                    //    images are scaled properly (default is 620px wide)
+                    //  - ratio, defines the width/height ratio of the slides, defaults to 1.3 (620x476)
+                    //  - margin, the fraction of screen to use as slide margin, defaults to 0.15
+                });
+                SyntaxHighlighter.all();
+            });
+        </script>
+        <!-- Custom style for this deck -->
+        <style type="text/css">
+            .slide.nofooter {
+                border: 0;
+                background: 0;
+            }
+            .pic {
+                 font-size: 400%;
+                 font-family: Symbola, serif;
+                 display: block;
+                 padding-right: .2em;
+                 padding-bottom: .1em;
+                 clear: both;
+                 float: left;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="slide title">
+            <h1 class="center">使用Mongo Shell做簡單的MongoDB操作</h1>
+        </div>
+
+        <div class="slide">
+           <h1>顯示現有的Database</h1>
+           <pre class="brush: plain">
+           $ mongo
+           MongoDB shell version: 3.2.5
+           connecting to: test
+           Server has startup warnings:
+           ...
+
+           &gt; show dbs
+           admin                                                   0.078GB
+           local                                                   0.078GB
+           local_resource                                          0.203GB
+           noah__gitosis__utils__matrix__parallel_run_one_command  0.203GB
+           noah__gitosis__utils__matrix__run_get_fjud              0.953GB
+           noah__lipuyeh__utils__venus__run_get_fjud_1             0.953GB
+           verdict_db_test                                         7.950GB
+           verdicts                                                0.078GB
+           </pre>
+        </div>
+
+        <div class="slide">
+           <h1>切換Database</h1>
+           <pre class="brush: plain">
+           > use verdict_db_test
+           switched to db verdict_db_test
+           > show collections
+           system.indexes
+           verdict_col_test
+           </pre>
+        </div>
+
+        <div class="slide">
+           <h1>計算Collection下有多少筆Document</h1>
+           <pre class="brush: plain">
+           > use verdict_db_test
+           switched to db verdict_db_test
+           > db.verdict_col_test.count()
+           110200                               # 共 110200 筆
+           </pre>
+        </div>
+
+        <div class="slide">
+           <h1>用find()查詢符合條件的Document</h1>
+           <pre class="brush: plain">
+           > db.verdict_col_test.find()
+           ...                                  # Lots of output
+           > db.verdict_col_test.find({"name": "最高法院-刑-101台上4640"})
+           { "_id" : 23087, "keywords_seq" :...
+           > db.verdict_col_test.find({"name" : {"$regex": "^最高法院"}}).limit(2)
+           ...                                  # 只顯示2筆資料
+           </pre>
+        </div>
+
+        <div class="slide">
+           <h1>用find()搭配count()</h1>
+           <pre class="brush: plain">
+           > db.verdict_col_test.find({"name" : {"$regex": "^最高法院"}}).count()
+           103145
+           </pre>
+        </div>
+
+
+        <div class="slide">
+           <h1>用stats()顯示collection的統計資訊</h1>
+           <pre class="brush: plain">
+           > use verdict_db_only_keyword
+           switched to db verdict_db_only_keyword
+           > show collections
+           system.indexes
+           verdict_col_only_keyword
+           > db.verdict_col_only_keyword.stats()
+           {
+               "ns" : "verdict_db_only_keyword.verdict_col_only_keyword",
+               "count" : 110200,
+               "size" : 894270416,
+               "avgObjSize" : 8114,
+               "storageSize" : 1071263744,
+               "numExtents" : 18,
+               "nindexes" : 1,
+               "lastExtentSize" : 280522752,
+               "paddingFactor" : 1,
+               "systemFlags" : 0,
+               "userFlags" : 1,
+               "totalIndexSize" : 3221344,
+               "indexSizes" : {
+                   "_id_" : 3221344
+               },
+               "ok" : 1
+           }
+           </pre>
+        </div>
+
+        <div class="slide">
+           <h1>查詢document的大小</h1>
+           <pre class="brush: plain">
+           > var s = db.verdict_col_only_keyword.find().limit(1)
+           > s
+           { "_id" : 3216, ...}
+           > Object.bsonsize(s)
+           855
+           </pre>
+        </div>
+
+        <div class="slide">
+           <h1>砍掉整個database (小心使用!)</h1>
+           <pre class="brush: plain">
+           > db.dropDatabase()
+           { "dropped" : "verdict_db_test", "ok" : 1 }
+           </pre>
+        </div>
+
+        <div class="slide">
+           <h1>Resource</h1>
+           <ul>
+               <li>
+                <a href="https://docs.mongodb.org/manual/reference/mongo-shell/">mongo Shell Quick Reference</a>
+               </li>
+               <li>
+                <a href="http://blog.mlab.com/2014/01/how-big-is-your-mongodb/">db.stats()中的dataSize, storageSize 及 fileSize的區別</a>
+               </li>
+           </ul>
+           </pre>
+        </div>
+
+        <div class="layout" data-name="default">
+            <content></content>
+            <div class="footer">
+                <span class="center">chihungtzeng AT gmail.com</span>
+                <hr class="defloat" />
+            </div>
+        </div>
+
+        <div class="layout nofooter" data-name="alt">
+            <content></content>
+        </div>
+    </body>
+</html>

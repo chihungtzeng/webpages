@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <!-- Slide meta data, remove/edit as you see fit -->
+        <title>Performance Measurement in Python</title>
+        <meta name="generator" content="Organic" />
+        <meta name="author" content="" />
+        <meta name="company" content="" />
+        <meta name="email" content="" />
+        <meta name="date" content="2016-05-15" />
+        <meta name="venue" content="The Internets" />
+        <!-- Slippy core file and dependencies -->
+        <script type="text/javascript" src="../slippy/src/jquery.min.js"></script>
+        <script type="text/javascript" src="../slippy/src/jquery.history.js"></script>
+        <script type="text/javascript" src="../slippy/src/slippy.js"></script>
+        <!-- Slippy structural styles -->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/slippy.css"/>
+        <!-- Slippy theme -->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/slippy-pure.css"/>
+        <!-- Syntax highlighting core file  -->
+        <script type="text/javascript" src="../slippy/src/highlighter/shCore.js"></script>
+        <!-- Syntax highlighting brushes, remove those you don't need -->
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushBash.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCss.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushJava.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPython.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushScala.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushSql.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushVb.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushXml.js"></script>
+        <!-- Syntax highlighting styles-->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/highlighter/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../slippy/src/highlighter/shThemeEclipse.css"/>
+        <!-- Slippy init code -->
+        <script type="text/javascript">
+            $(function() {
+                $(".slide").slippy({
+                    // settings go here
+                    // possible values are:
+                    //  - animLen, duration for default animations (0 = disabled)
+                    //  - animInForward, receives a slide and animates it
+                    //  - animInRewind, receives a slide and animates it
+                    //  - animOutForward, receives a slide and animates it
+                    //  - animOutRewind, receives a slide and animates it
+                    //  - baseWidth, defines the base for img resizing, if you don't want only
+                    //    full-width images, specify this as the pixel width of a slide so that
+                    //    images are scaled properly (default is 620px wide)
+                    //  - ratio, defines the width/height ratio of the slides, defaults to 1.3 (620x476)
+                    //  - margin, the fraction of screen to use as slide margin, defaults to 0.15
+                });
+                SyntaxHighlighter.all();
+            });
+        </script>
+        <!-- Custom style for this deck -->
+        <style type="text/css">
+            .slide.nofooter {
+                border: 0;
+                background: 0;
+            }
+            .pic {
+                 font-size: 400%;
+                 font-family: Symbola, serif;
+                 display: block;
+                 padding-right: .2em;
+                 padding-bottom: .1em;
+                 clear: both;
+                 float: left;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="slide title">
+            <h1>Performance Measurement in Python</h1>
+        </div>
+
+        <div class="slide">
+            <h1>方法 1: 使用 time()</h1>
+            <pre class="brush: python">
+            import time
+
+            # 測量 do_something() 的計算時間
+            start = time.time()     # 從Epoch time到目前為止過了幾秒(float)
+            do_something()
+            total_time = time.time() - start
+            print("Total Time: {} seconds".format(total_time))
+            </pre>
+
+            <h2>特點</h2>
+            <ul>
+                <li>不精準, 多工作業的環境會影響測量結果.</li>
+                <li>人力密集, 需要對個別function前後插入程式碼.</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>方法 2: 使用 timeit</h1>
+            <pre class="brush: python">
+            import os
+            import timeit
+
+            NAMES = os.listdir("/somewhere/data")
+            DICT0 = {name: 1 for name in NAMES[0:len(NAMES)/2]}
+            DICT1 = {name: 1 for name in NAMES[len(NAMES)/2:]}
+            NUMBER = 1000
+
+            def find_all_keys_by_dict_generator():
+                return {key:1 for key in DICT0.keys() + DICT1.keys()}
+
+            def main():
+                t = timeit.timeit("find_all_keys_by_dict_generator", setup="from __main__ import find_all_keys_by_dict_generator", number=NUMBER)
+                print("dict generator: {} seconds".format(t))
+
+            if __name__ == "__main__":
+                main()
+            </pre>
+
+            <pre class="brush: bash">
+            $ python your_script.py
+            dict generator: 2.88486480713e-05 seconds
+            </pre>
+            <h2>特點</h2>
+            <ul>
+                <li>較適用於短少程式的performance的測量</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>timeit範例</h1>
+            <pre class="brush: python">
+import timeit
+
+SETUP = """
+from __main__ import insetset_with_set, interset_with_dict_generator
+
+dict0 = {r:1 for r in xrange(0, 500)}
+dict1 = {r:1 for r in xrange(200, 700)}
+"""
+
+def insetset_with_set(dict0, dict1):
+    return list(set(dict0.keys()) & set(dict1.keys()))
+
+def interset_with_dict_generator(dict0, dict1):
+    return {v: 1 for v in dict0.keys() if v in dict1}.keys()
+
+if __name__ == "__main__":
+    t = timeit.timeit("insetset_with_set(dict0, dict1)", setup=SETUP)
+    print("insetset_with_set(): {} seconds".format(t))
+    t = timeit.timeit("interset_with_dict_generator(dict0, dict1)", setup=SETUP)
+    print("interset_with_dict_generator(): {} seconds".format(t))
+            </pre>
+            <pre>
+insetset_with_set(): 37.3345758915 seconds
+interset_with_dict_generator(): 26.2605271339 seconds
+            </pre>
+        </div>
+        <div class="slide">
+            <h1>方法 3: 使用 cProfile</h1>
+            <pre class="brush: python">
+            import cProfile
+
+            if __name__ == "__main__":
+                cProfile.run("main()", sort="time")
+            </pre>
+
+            <hr>
+            <pre>
+         31495363 function calls (31494946 primitive calls) in 39.285 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+      180   10.294    0.057   10.294    0.057 {bson._cbson.decode_all}
+     7620    4.713    0.001   12.144    0.002 verdict_correlation.py:116(_get_values_by_keys)    
+            </pre>
+            <hr>
+
+            <h2>特點</h2>
+            <ul>
+                <li>cProfile 為內建的profiler</li>
+                <li>資訊豐富</li>
+            </ul>
+        </div>
+
+
+        <div class="layout" data-name="default">
+            <content></content>
+            <div class="footer">
+                <span class="center">chihungtzeng AT gmail.com</span>
+                <hr class="defloat" />
+            </div>
+        </div>
+
+        <div class="layout nofooter" data-name="alt">
+            <content></content>
+        </div>
+    </body>
+</html>

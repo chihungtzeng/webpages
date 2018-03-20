@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <!-- Slide meta data, remove/edit as you see fit -->
+        <title>Unicode in Python</title>
+        <meta name="generator" content="Organic" />
+        <meta name="author" content="" />
+        <meta name="company" content="" />
+        <meta name="email" content="" />
+        <meta name="date" content="2016-04-10" />
+        <meta name="venue" content="The Internets" />
+        <!-- Slippy core file and dependencies -->
+        <script type="text/javascript" src="../slippy/src/jquery.min.js"></script>
+        <script type="text/javascript" src="../slippy/src/jquery.history.js"></script>
+        <script type="text/javascript" src="../slippy/src/slippy.js"></script>
+        <!-- Slippy structural styles -->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/slippy.css"/>
+        <!-- Slippy theme -->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/slippy-pure.css"/>
+        <!-- Syntax highlighting core file  -->
+        <script type="text/javascript" src="../slippy/src/highlighter/shCore.js"></script>
+        <!-- Syntax highlighting brushes, remove those you don't need -->
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushBash.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCss.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushJava.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPython.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushScala.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushSql.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushVb.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushXml.js"></script>
+        <!-- Syntax highlighting styles-->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/highlighter/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../slippy/src/highlighter/shThemeEclipse.css"/>
+        <!-- Slippy init code -->
+        <script type="text/javascript">
+            $(function() {
+                $(".slide").slippy({
+                    // settings go here
+                    // possible values are:
+                    //  - animLen, duration for default animations (0 = disabled)
+                    //  - animInForward, receives a slide and animates it
+                    //  - animInRewind, receives a slide and animates it
+                    //  - animOutForward, receives a slide and animates it
+                    //  - animOutRewind, receives a slide and animates it
+                    //  - baseWidth, defines the base for img resizing, if you don't want only
+                    //    full-width images, specify this as the pixel width of a slide so that
+                    //    images are scaled properly (default is 620px wide)
+                    //  - ratio, defines the width/height ratio of the slides, defaults to 1.3 (620x476)
+                    //  - margin, the fraction of screen to use as slide margin, defaults to 0.15
+                });
+                SyntaxHighlighter.all();
+            });
+        </script>
+        <!-- Custom style for this deck -->
+        <style type="text/css">
+            .slide.nofooter {
+                border: 0;
+                background: 0;
+            }
+            .pic {
+                 font-size: 400%;
+                 font-family: Symbola, serif;
+                 display: block;
+                 padding-right: .2em;
+                 padding-bottom: .1em;
+                 clear: both;
+                 float: left;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="slide title">
+            <h1>Unicødε in ℙ⑂th☯n</h1>
+            <h1 class="center">萬國字元及其編碼</h1>
+        </div>
+
+        <div class="slide">
+            <h1>Unicode and Encoding</h1>
+            <ul>
+                <li>Unicode: 字元和數字之間的對應. 比方說, "您"這個字在 Unicode 中和 16 進位的 60a8 相對應.</li>
+                <li>Encoding: Unicode在記憶體裡的儲存方式.</li>
+            </ul>
+            <pre class="brush: plain">
+            >>> s = u"您好 Qt"
+            >>> s
+            u'\u60a8\u597d Qt'
+            >>> s.encode("utf-8")
+            '\xe6\x82\xa8\xe5\xa5\xbd Qt'
+
+            >>> s = u"\u9f9c"
+            >>> print(s)
+            龜
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>數字 ⬌ 字元的對應</h1>
+            <p>電腦只認識0和1, 如數字, 字元等等的概念要由 0 和 1 組合而成.</p>
+            <pre class="brush: plain">
+            >>> ord("a")
+            97                  # 數字 97 代表字元 a.
+            >>> "{0:b}".format(97)
+            '1100001'
+            </pre>
+            <p> 電腦看到 1100001 時, 可以把它解讀成十進位數字 97, 也可以解讀成小寫字母a.</p>
+        </div>
+
+        <div class="slide">
+            <h1>為什麼要有unicode?</h1>
+            <p>若(字元, 數字)對應方式不統一. 電腦對資料的解讀方法就會不同, 彼此就無法交換資料.</p>
+            <br>
+            <p>早期只定義了 ascii code (127個字元), 不夠用, 故有了 unicode. </p>
+            <br>
+            <span class="pic">
+                ☃ 🐭 🐮 🐱 😨😁😱⛐
+            </span>
+        </div>
+
+        <div class="slide">
+            <h1>Encoding(編碼) 又是什麼?</h1>
+            <br>
+            <p>Encoding 是數字實際在電腦中的表達方式. 像是要用幾個 byte 表示一個數字, 用little endian 儲存或是 big endian 儲存等.</p>
+            <br>
+            <p>比方說, 60a8 和 597d 這兩個 16 進位數字在記憶體中可以儲存為</p>
+            <pre class="brush: plain">
+            60 a8 59 7d              # 2 bytes 存一個數字
+            00 00 60 a8 00 00 59 7d  # 4 bytes 存一個數字, little endian
+            a8 60 00 00 7d 59 00 00  # 4 bytes 存一個數字, big endian
+            </pre>
+            <p>知道Encoding的方式為何, 才能正確解讀這些資料.</p>
+        </div>
+
+        <div class="slide">
+            <h1>Unicode and UTF-8</h1>
+            <p>unicode 是邏輯上的數字⬌字元的對應關係, 此對應關係是是唯一的, 但它可以有許多不同的編碼方式.</p>
+            <p>最常見的 unicode encoding 是 UTF-8.</p>
+            <pre class="brush: plain">
+            >>> s = u"您好 Qt"
+            >>> s.encode("utf-8")
+            '\xe6\x82\xa8\xe5\xa5\xbd Qt'
+            >>> s.encode("big5")
+            '\xb1z\xa6n Qt'
+            >>> s.encode("utf-16")
+            '\xff\xfe\xa8`}Y \x00Q\x00t\x00'
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>使用UTF-8的優點</h1>
+            <ul>
+            <li>不佔用多餘的記憶體空間</li>
+            <li>UTF-8 編碼過的 byte sequence 中間不會出現0, 故 C 的 strlen() 等函式仍可正確判斷字串的結束之處.</li>
+            <li>和 ascii code 相容</li>
+            <li>使用人數眾多</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>Python 2.x 的實做</h1>
+            <ul>
+                <li>str: byte sequence</li>
+                <li>unicode: code point(unicode) sequence</li>
+            </ul>
+            <pre class="brush: plain">
+            >>> s1 = "Hello Qt"     # str object
+            >>> type(s1)
+            &lt;type 'str'&gt;
+            >>> s2 = u"Hello Qt"    # unicode object
+            >>> type(s2)
+            &lt;type 'unicode'&gt;
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>.encode() 和 .decode()</h1>
+            <ul>
+                <li>.encode(): unicode →  byte</li>
+                <li>.decode(): byte →  unicode</li>
+            </ul>
+            <pre class="brush: plain">
+            >>> u = u"您好 Qt"
+            >>> len(u)
+            5
+            >>> utf8 = u.encode("utf-8")
+            >>> len(utf8)
+            9
+            >>> utf8
+            '\xe6\x82\xa8\xe5\xa5\xbd Qt'
+            >>> utf8.decode("utf-8")
+            u'\u60a8\u597d Qt'
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>生活是如此美好, 直到...</h1>
+            <pre class="brush: plain">
+            >>> apple = "\xe8\x98\x8b\xe6\x9e\x9c"
+            >>> u"Good to eat %s" % (apple)           # 混用 str 和 unicode
+            Traceback (most recent call last):
+              File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+              UnicodeDecodeError: 'ascii' codec can't decode byte 0xe8 in position 0: ordinal not in range(128)
+            >>> "Good to eat %s" % (apple)
+            'Good to eat \xe8\x98\x8b\xe6\x9e\x9c'
+            >>> print("Good to eat %s" % (apple))
+            Good to eat 蘋果
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>用replace放大絕招</h1>
+            <pre class="brush: plain">
+            >>> u = u"您好Qt"
+            >>> utf8 = u.encode("utf-8")
+            >>> utf8.decode("ascii")
+            Traceback (most recent call last):
+              File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+              UnicodeDecodeError: 'ascii' codec can't decode byte 0xe6 in position 0: ordinal not in range(128)
+            >>> utf8.decode("ascii", "replace")
+            u'\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdQt'
+            >>> print(utf8.decode("ascii", "replace"))
+            ������Qt
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>IO Rediction 時才會出問題 😱</h1>
+            <pre class="brush: plain">
+            $ python split.py > output
+            Traceback (most recent call last):
+              File "split.py", line 6, in <module>
+                  print item
+            UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-1: ordinal not in range(128)
+            </pre>
+            <h1>使用PYTHONIOENCODING環境變數解決 😊 </h1>
+            <pre class="brush: plain">
+            $ PYTHONIOENCODING=utf-8 python split.py > output
+            $
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>查看是str還是unicode</h1>
+            <ul>
+                <li> print(type(your_var))</li>
+                <li> isinsance(your_var, unicode) </li>
+            <ul>
+        </div>
+
+        <div class="slide">
+            <h1>type是str, 但內容卻是utf8的編碼</h1>
+            <p>出現此情況的可能原因:</p>
+            <ul>
+                <li>使用os.list(/path/to/), 且系統的encoding是utf8</li>
+                <li>資料從網路上而來</li>
+            <ul>
+            <pre class="brush: plain">
+            >>> s = "\xe8\x87\xba\xe7\x81\xa3"
+            >>> print s
+            臺灣
+            >>> type(s)
+            &lt;type 'str'&gt;
+            >>> s = s.decode("utf-8")           # 用decode() 變成 unicode
+            >>> type(s)
+            &lt;type 'unicode'&gt;
+            >>> print s
+            臺灣
+            </pre>
+        <div class="slide">
+
+
+        <div class="slide">
+            <h1>當資料是從外部來的時候...靠來源告訴你encoding為何, 或者自己猜測</h1>
+            <pre class="brush: plain">
+                <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+                <?xml version="1.0" encoding="UTF-8" ?>
+
+                # -*- coding: iso8859-1 -*-
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>Tips</h1>
+            <ul>
+                <li>知道目前處理的資料是 str 還是 unicode</li>
+                <li>寫測試程式</li>
+            </ul>
+        </div>
+
+        <div class="layout" data-name="default">
+            <content></content>
+            <div class="footer">
+                <span class="center">chihungtzeng AT gmail.com</span>
+                <hr class="defloat" />
+            </div>
+        </div>
+
+        <div class="layout nofooter" data-name="alt">
+            <content></content>
+        </div>
+    </body>
+</html>

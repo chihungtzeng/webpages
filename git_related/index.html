@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <!-- Slide meta data, remove/edit as you see fit -->
+        <title>Git 筆記</title>
+        <meta name="generator" content="Organic" />
+        <meta name="author" content="" />
+        <meta name="company" content="" />
+        <meta name="email" content="clark@cs.nthu.edu.tw" />
+        <meta name="date" content="2016-04-10" />
+        <meta name="venue" content="The Internets" />
+        <!-- Slippy core file and dependencies -->
+        <script type="text/javascript" src="../slippy/src/jquery.min.js"></script>
+        <script type="text/javascript" src="../slippy/src/jquery.history.js"></script>
+        <script type="text/javascript" src="../slippy/src/slippy.js"></script>
+        <!-- Slippy structural styles -->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/slippy.css"/>
+        <!-- Slippy theme -->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/slippy-pure.css"/>
+        <!-- Syntax highlighting core file  -->
+        <script type="text/javascript" src="../slippy/src/highlighter/shCore.js"></script>
+        <!-- Syntax highlighting brushes, remove those you don't need -->
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushBash.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushCss.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushJava.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushPython.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushScala.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushSql.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushVb.js"></script>
+        <script type="text/javascript" src="../slippy/src/highlighter/shBrushXml.js"></script>
+        <!-- Syntax highlighting styles-->
+        <link type="text/css" rel="stylesheet" href="../slippy/src/highlighter/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../slippy/src/highlighter/shThemeEclipse.css"/>
+        <!-- Slippy init code -->
+        <script type="text/javascript">
+            $(function() {
+                $(".slide").slippy({
+                    // settings go here
+                    // possible values are:
+                    //  - animLen, duration for default animations (0 = disabled)
+                    //  - animInForward, receives a slide and animates it
+                    //  - animInRewind, receives a slide and animates it
+                    //  - animOutForward, receives a slide and animates it
+                    //  - animOutRewind, receives a slide and animates it
+                    //  - baseWidth, defines the base for img resizing, if you don't want only
+                    //    full-width images, specify this as the pixel width of a slide so that
+                    //    images are scaled properly (default is 620px wide)
+                    //  - ratio, defines the width/height ratio of the slides, defaults to 1.3 (620x476)
+                    //  - margin, the fraction of screen to use as slide margin, defaults to 0.15
+                });
+                SyntaxHighlighter.all();
+            });
+        </script>
+        <!-- Custom style for this deck -->
+        <style type="text/css">
+            .slide.nofooter {
+                border: 0;
+                background: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="slide">
+            <h1>Git 雜談</h1>
+        </div>
+
+        <div class="slide">
+            <h1>git status 顯示 UTF-8 字元</h1>
+            <pre class="brush: bash">
+                git config core.quotepath false
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>git status 一直顯示modified file, 但檔案內容都一樣呀</h1>
+            <pre class="brush: bash">
+                # 方法 1
+                git rm --cache -r .
+                git reset --hard
+                # 方法 2
+                git config core.autocrlf false
+                # 方法 3
+                git config core.filemode false
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>列出Tracked files</h1>
+            <pre class="brush: bash">
+                git ls-files 或
+                git ls-tree -r master --name-only
+            </pre>
+            <h1>列出 Commits 影響到的檔案</h1>
+            <pre class="brush: bash">
+                git diff-tree -r SHA1^ SHA1
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>git log 相關</h1>
+            <pre class="brush: bash">
+                # 只列出 SHA1 和 Subjects
+                git log --oneline --no-abbrev-commit
+                # 只列出前 5 筆的 SHA1 和 Subjects
+                git log --oneline --no-abbrev-commit -n 5
+                # 只顯示特定 commit 的 Subjects
+                git log --format="%s" -n 1 SHA1
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>套用 patch 檔</h1>
+            <pre class="brush: bash">
+                git format-patch -1 SHA1    # 產生 SHA1 的 patch 檔
+                git apply --stat foo.patch  # 顯示 foo.patch 的統計資料
+                git apply --check foo.patch # 檢查是否可以將 foo.patch 套入
+                git am < foo.patch          # 將 foo.patch 套入
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>列出 untracked 檔案</h1>
+            <pre class="brush: bash">
+                git status
+                git ls-files --others --exclude-standard
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>刪除 untracked 檔案</h1>
+            <pre class="brush: bash">
+                git clean -f    # 刪除
+                git clean -n -f # 演習模式, 只顯示訊息, 不會真的刪檔
+                git clean -f -x # 刪除 untracked 和 ignored 檔案
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>單獨回復某檔案</h1>
+            <pre class="brush: bash">
+                # -- 表示後面跟著的是檔名, 而非 branch 或 tag.
+                git checkout -- file_name
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>更改commit的訊息</h1>
+            <pre class="brush: bash">
+                git commit --amend -m 'New message.'
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>檔名顯示為8進位的數字</h1>
+            <pre class="brush: bash">
+            fatal: pathspec '"raw_data/\350\207\272\347\201\243\351\253\230\347\255\211\346\263\225\351\231\242-\351\253\230\351\233\204\345\210\206\351\231\242-\345\210\221-100\344\270\212\350\250\264483"'
+            </pre>
+            <h1>解法:</h1>
+            <pre class="brush: bash">
+            echo `printf "\350\207\272\347\201\243\351\253\230\347\255\211\346\263\225\351\231\242-\351\253\230\351\233\204\345\210\206\351\231\242-\345\210\221-100\344\270\212\350\250\264483"`
+            臺灣高等法院-高雄分院-刑-100上訴483
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>Git submoudle相關指令</h1>
+            <pre class="brush: bash">
+                git submodule sync src/3rdparty
+                git submodule init src/3rdparty
+                git submodule update src/3rdparty
+                git submodule foreach git pull
+            </pre>
+        </div>
+
+        <div class="slide">
+            <h1>Git remote</h1>
+            <pre class="brush: bash">
+                # 新增一個 remote
+                git remote add origin ssh://gitosis@matrix.bi-xi.com/matrix/verdicts_all/verdicts_all.git
+                # 移除 remote
+                git remote rm origin
+                # push master branch 到 origin
+                git push -u origin master
+            </pre>
+        </div>
+
+        <div class="layout" data-name="default">
+            <content></content>
+            <div class="footer">
+                <span class="center">chihungtzeng AT gmail.com</span>
+                <hr class="defloat" />
+            </div>
+        </div>
+
+    </body>
+</html>
