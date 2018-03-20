@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <title>Countdown life</title>
+        <style>
+        .digits {
+          font-weight: bold;
+        }
+        </style>
+    </head>
+    <body>
+    <div class="digits">
+    <span id="remaining_day"></span>:
+    <span id="remaining_hour"></span>:
+    <span id="remaining_minute"></span>:
+    <span id="remaining_second"></span>
+    </div>
+    </body>
+<script>
+    function __get_remaining() {
+        var death = new Date(1979 + 80, 7, 1, 0, 0, 0, 0);
+        var today = new Date();
+        var total = death.getTime() - today.getTime();
+        var seconds = (total / 1000);
+        return seconds;
+    }
+    function __update_remaining() {
+        var e;
+        var r = Math.floor(__get_remaining());
+        var s, m, h, d; // second, minute, hour, day
+        s = r % 60;
+        m = ((r - s) / 60) % 60;
+        h = ((r - s - m * 60) / 3600) % 24;
+        d = Math.floor(r / 86400);
+
+        e = document.getElementById("remaining_second");
+        e.innerHTML = "" + s;
+        e = document.getElementById("remaining_minute");
+        e.innerHTML = "" + m;
+        e = document.getElementById("remaining_hour");
+        e.innerHTML = "" + h;
+        e = document.getElementById("remaining_day");
+        e.innerHTML = "" + d;
+    }
+    setInterval(__update_remaining, 1000);
+</script>
+
+</html>
