@@ -27,6 +27,8 @@ This page is my notes about what I learned. They are mostly technical stuffs tha
 
 [Unicode in Python](py_unicode/index.html)
 
+[Dead URL Checker](dead_url_checker/) Make use of the behavior of crawlers to detect dead links.
+
 ### Utilities
 
 [Checksum of the text section of a program](elf_checksum/)
