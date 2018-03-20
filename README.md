@@ -29,7 +29,7 @@ This page is my notes about what I learned. They are mostly technical stuffs tha
 
 [偵測網頁中的無效href連結](dead_url_checker/)
 
-[用 Gtk 的 python binding 實作一個自己的瀏覽器。](py_gtk_browser) 
+[用 Gtk 的 python binding 實作一個自己的瀏覽器。](py_gtk_browser/)
 
 ### Utilities
 
